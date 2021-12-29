@@ -60,7 +60,6 @@ function(protobuf_generate_cpp SRC_FILES HDR_FILES PROTOBUF_INCLUDE_PATH PROTOBU
     set(${SRC_FILES})
     set(${HDR_FILES})
     file(MAKE_DIRECTORY ${PROTOBUF_GEN_CPP_DIR})
-    set(PROTOBUF_GEN_PYTHON_DIR "")
 
     foreach(FIL ${ARGN})
         message(STATUS "Calling protobuf_generate_cpp with file " ${FIL})
@@ -76,7 +75,6 @@ function(protobuf_generate_cpp SRC_FILES HDR_FILES PROTOBUF_INCLUDE_PATH PROTOBU
                 "${PROTOBUF_GEN_CPP_DIR}/${FIL_WE}.pb.h"
                 COMMAND ${PROTOBUF_PROTOC_EXECUTABLE}
                 ARGS --cpp_out=${PROTOBUF_GEN_CPP_DIR}
-                ${PROTOBUF_GEN_PYTHON_DIR}
                 -I ${PROTOBUF_BASE_INCLUDE_DIR}
                 -I ${PROTOBUF_INCLUDE_PATH}
                 ${ABS_FIL}
