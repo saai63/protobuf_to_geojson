@@ -31,4 +31,7 @@ jobs:
         run: sudo apt-get install cmake;
 
       - name: Build
-        run : mkdir build; cd build; cmake ..; make;
+        run : mkdir build; cd build; cmake -DCMAKE_BUILD_TYPE=Debug ..; make;
+
+      - name: Test
+        run : cd build; ./create_protobuf/create_protobuf; ./pbf_to_geojson/protobuf_to_geojson test.pbf test.geojson
