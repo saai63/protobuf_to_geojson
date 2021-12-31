@@ -3,6 +3,12 @@ syntax = "proto3";
 package utils.visualization;
 
 message proto_visualizer {
+  enum FeatureType {
+    FEATURE_COLLECTION = 0;
+    FEATURE = 1;
+    POINT = 2;
+    LINESTRING = 3;
+  }
 
 	message Coordinates{
 		repeated double internal_cordinates = 1 [packed=true];
@@ -10,15 +16,15 @@ message proto_visualizer {
 
   message Geometry {
       repeated Coordinates coordinates = 1;
-      string type = 2;
+      FeatureType type = 2;
   }
 
   message Features {
       Geometry geometry = 1;
-      string type = 2;
+      FeatureType type = 2;
       map<string,string> properties = 3;
   }
 
-	string type = 1;
+  FeatureType type = 1;
 	repeated Features features = 2;
 }
