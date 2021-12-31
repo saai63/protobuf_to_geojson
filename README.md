@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-![Build](https://github.com/saai63/protobuf_to_geojson/workflows/build_check/badge.svg)
+![Build](https://github.com/saai63/protobuf_to_geojson/workflows/Build_Project/badge.svg)
 
 ### Motivation
 Any application that needs to work with geographical data would need some kind of visualization tools.
