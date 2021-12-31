@@ -1,4 +1,9 @@
 ## protobuf_to_geojson
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+![Build](https://github.com/saai63/protobuf_to_geojson/workflows/build_check/badge.svg)
+
 ### Motivation
 Any application that needs to work with geographical data would need some kind of visualization tools.
 [GEOJSON](https://en.wikipedia.org/wiki/GeoJSON) is one such convenient format to visualize GIS data. However, since GEOJSON is a textual format, the space consumption would be pretty high.
