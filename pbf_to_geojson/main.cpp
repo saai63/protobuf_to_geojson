@@ -5,6 +5,19 @@
 #include <iomanip>
 #include "../proto/srcgen/visualization.pb.h"
 
+std::string getFeatureType(const utils::visualization::proto_visualizer_FeatureType& featureType)
+{
+    switch(featureType)
+    {
+        case utils::visualization::proto_visualizer_FeatureType_POINT:
+            return "Point";
+        case utils::visualization::proto_visualizer_FeatureType_LINESTRING:
+            return "LineString";
+        default:
+            return "";
+    }
+}
+
 int main(int argc, char*argv[])
 {
     if(argc != 3)
@@ -27,11 +40,39 @@ int main(int argc, char*argv[])
             std::cout << "Failed to parse input file." << std::endl;
             return -1;
         }
-        std::cout << "Type : " << protoVisualizer.type().c_str()  << protoVisualizer.ByteSizeLong() << std::endl;
+#ifdef MANUAL_JSON_CREATION
+        nlohmann::json myJson;
+        myJson["type"] = "FeatureCollection";
+        auto geoJsonFeatures = nlohmann::json::array();
         for(const auto& item : protoVisualizer.features())
         {
-            std::cout << item.geometry().type() << std::endl;
+            nlohmann::json tmp;
+            tmp["type"] = "Feature";
+            auto featureKind = item.geometry().type();
+            tmp["geometry"]["type"] = getFeatureType(featureKind);
+            if(featureKind == utils::visualization::proto_visualizer_FeatureType_POINT)
+            {
+                for(const auto& coordinates : item.geometry().coordinates())
+                {
+                    tmp["geometry"]["coordinates"] = coordinates.internal_cordinates();
+                }
+            }
+            else if(featureKind == utils::visualization::proto_visualizer_FeatureType_LINESTRING)
+            {
+                for(const auto& coordinates : item.geometry().coordinates())
+                {
+                    tmp["geometry"]["coordinates"].push_back(coordinates.internal_cordinates());
+                }
+            }
+            tmp["properties"] ={};
+            for(const auto &property : item.properties())
+            {
+                tmp["properties"][property.first] = property.second;
+            }
+            geoJsonFeatures.push_back(tmp);
         }
+        myJson["features"] = geoJsonFeatures;
+#else
         std::string jsonString;
         google::protobuf::util::JsonPrintOptions options;
         options.add_whitespace = true;
@@ -66,11 +107,12 @@ int main(int argc, char*argv[])
         }
         myJson["features"].clear();
         myJson["features"] = newFeatures;
-
+#endif
         std::fstream of(outputFile.c_str(),std::ios::out | std::ios::trunc);
-        of << std::setw(4) << myJson;
+        of << myJson;
         google::protobuf::ShutdownProtobufLibrary();
     }
+
     catch(const std::exception& mainException)
     {
         std::cout << "Caught exception " << mainException.what() << std::endl;

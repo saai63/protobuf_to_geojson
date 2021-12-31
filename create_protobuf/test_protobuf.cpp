@@ -9,7 +9,7 @@ int main()
     std::vector<Point> line;
     line.emplace_back(43.12003138678775, -84.31182861328125);
     line.emplace_back(43.033764503405315, -84.03030395507812);
-    line.emplace_back(443.26420629463836, -84.00146484374999);
+    line.emplace_back(43.26420629463836, -84.00146484374999);
     FeatureProperties properties;
     properties["SpeedLimit"] = "50";
     visualizer->addLine(Line{line},properties);

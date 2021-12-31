@@ -35,3 +35,10 @@ jobs:
 
       - name: Test
         run : cd build; ./create_protobuf/create_protobuf; ./pbf_to_geojson/protobuf_to_geojson test.pbf test.geojson
+
+      - name: Build_WorkAround
+        run : mkdir build-workaround; cd build; cmake -DCMAKE_BUILD_TYPE=Debug -DUSE_PBF_WORKAROUND=ON ..; make;
+
+      - name: Test_WorkAround
+        run : cd build-workaround; ./create_protobuf/create_protobuf; ./pbf_to_geojson/protobuf_to_geojson test.pbf test.geojson
+

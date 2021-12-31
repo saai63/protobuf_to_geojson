@@ -5,18 +5,18 @@ namespace utils::visualization{
 
 ProtobufVisualizer::ProtobufVisualizer()
 {
-    m_obj.set_type("FeatureCollection");
+    m_obj.set_type(proto_visualizer_FeatureType_FEATURE_COLLECTION);
 }
 
 bool ProtobufVisualizer::addPoint(Point point, const FeatureProperties &properties)
 {
     auto *feature = m_obj.add_features();
     auto *geom = feature->mutable_geometry();
-    geom->set_type("Point");
+    geom->set_type(proto_visualizer_FeatureType_POINT);
     auto *cords = geom->add_coordinates();
     cords->add_internal_cordinates(point.m_longitude);
     cords->add_internal_cordinates(point.m_latitude);
-    feature->set_type("Feature");
+    feature->set_type(proto_visualizer_FeatureType_FEATURE);
     if(!properties.empty())
     {
         auto* property = feature->mutable_properties();
@@ -32,14 +32,14 @@ bool ProtobufVisualizer::addLine(Line line, FeatureProperties properties)
 {
     auto *feature = m_obj.add_features();
     auto *geom = feature->mutable_geometry();
-    geom->set_type("LineString");
+    geom->set_type(proto_visualizer_FeatureType_LINESTRING);
     for(const auto point : line.m_points)
     {
         auto *cords = geom->add_coordinates();
         cords->add_internal_cordinates(point.m_longitude);
         cords->add_internal_cordinates(point.m_latitude);
     }
-    feature->set_type("Feature");
+    feature->set_type(proto_visualizer_FeatureType_FEATURE);
     if(!properties.empty())
     {
 
